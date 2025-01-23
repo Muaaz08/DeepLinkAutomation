@@ -24,34 +24,37 @@ $(document).ready(function () {
 
   $("#toggleActive").prop("checked", toggleActive);
 
-  // Trigger DataTable filtering based on query params
-  const dataTable = $("#dataTable").DataTable();
+  // Trigger the Apply Filters button programmatically
+  $("#applyFilters").click();
 
-  dataTable.rows().every(function () {
-    const data = this.data();
+  //   // Trigger DataTable filtering based on query params
+  //   const dataTable = $("#dataTable").DataTable();
 
-    const matchesProjectId = !projectId || data[0] === projectId;
-    const matchesStatus = !status || data[1] === status;
-    const matchesRegion = !region || data[2] === region;
-    const matchesType = !type || data[3] === type;
-    const matchesFeatures = features.length === 0 || features.includes(data[4]);
-    const matchesToggleActive =
-      !toggleActive || data[5] === (toggleActive ? "Yes" : "No");
+  //   dataTable.rows().every(function () {
+  //     const data = this.data();
 
-    if (
-      matchesProjectId &&
-      matchesStatus &&
-      matchesRegion &&
-      matchesType &&
-      matchesFeatures &&
-      matchesToggleActive
-    ) {
-      $(this.node()).show();
-    } else {
-      $(this.node()).hide();
-    }
-  });
+  //     const matchesProjectId = !projectId || data[0] === projectId;
+  //     const matchesStatus = !status || data[1] === status;
+  //     const matchesRegion = !region || data[2] === region;
+  //     const matchesType = !type || data[3] === type;
+  //     const matchesFeatures = features.length === 0 || features.includes(data[4]);
+  //     const matchesToggleActive =
+  //       !toggleActive || data[5] === (toggleActive ? "Yes" : "No");
 
-  // Ensure DataTable redraws to reflect changes
-  dataTable.draw();
+  //     if (
+  //       matchesProjectId &&
+  //       matchesStatus &&
+  //       matchesRegion &&
+  //       matchesType &&
+  //       matchesFeatures &&
+  //       matchesToggleActive
+  //     ) {
+  //       $(this.node()).show();
+  //     } else {
+  //       $(this.node()).hide();
+  //     }
+  //   });
+
+  //   // Ensure DataTable redraws to reflect changes
+  //   dataTable.draw();
 });
