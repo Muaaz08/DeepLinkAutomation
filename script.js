@@ -19,45 +19,67 @@ function applyFiltersFromQueryParams() {
   Object.keys(params).forEach((key) => {
     const input = document.querySelector(`[data-filter-name="${key}"]`);
     if (input) {
-      input.value = params[key];
-      input.dispatchEvent(new Event("change")); // Simulate change event
+      if (input.type === "checkbox" || input.type === "radio") {
+        input.checked = input.value === params[key];
+      } else if (input.tagName === "SELECT") {
+        input.value = params[key];
+      } else {
+        input.value = params[key];
+      }
+      input.dispatchEvent(new Event("change"));
+    }
+
+    // Handle dropdown menus
+    if (key === "region") {
+      const dropdownItem = document.querySelector(
+        `#regionDropdownMenu [data-value="${params[key]}"]`
+      );
+      if (dropdownItem) {
+        dropdownItem.click();
+      }
     }
   });
 
-  // Trigger filter logic after setting the values
   filterDataTable();
 }
 
 // Filter the data table based on current input values
 function filterDataTable() {
   const projectId = document.getElementById("projectId").value.trim();
-  const projectTypeId = document.getElementById("projectTypeId").value.trim();
-  const groupId = document.getElementById("groupId").value.trim();
-  const region = document.getElementById("region").value.trim();
   const status = document.getElementById("status").value.trim();
+  const region = document
+    .querySelector("#regionDropdownMenu .active")
+    ?.getAttribute("data-value");
+  const type = document.querySelector('input[name="type"]:checked')?.value;
+  const features = Array.from(
+    document.querySelectorAll('input[data-filter-name="feature"]:checked')
+  ).map((el) => el.value);
+  const toggleActive = document.getElementById("toggleActive").checked;
 
   const rows = document.querySelectorAll("#dataTable tr");
   rows.forEach((row) => {
     const rowProjectId = row.getAttribute("data-project-id");
-    const rowProjectTypeId = row.getAttribute("data-project-type-id");
-    const rowGroupId = row.getAttribute("data-group-id");
-    const rowRegion = row.getAttribute("data-region");
     const rowStatus = row.getAttribute("data-status");
+    const rowRegion = row.getAttribute("data-region");
+    const rowType = row.getAttribute("data-type");
+    const rowFeature = row.getAttribute("data-feature");
+    const rowToggleActive = row.getAttribute("data-toggle-active") === "true";
 
     const matchesProjectId = !projectId || rowProjectId === projectId;
-    const matchesProjectTypeId =
-      !projectTypeId || rowProjectTypeId === projectTypeId;
-    const matchesGroupId = !groupId || rowGroupId === groupId;
-    const matchesRegion = !region || rowRegion === region;
     const matchesStatus = !status || rowStatus === status;
+    const matchesRegion = !region || rowRegion === region;
+    const matchesType = !type || rowType === type;
+    const matchesFeature =
+      features.length === 0 || features.includes(rowFeature);
+    const matchesToggleActive = toggleActive === rowToggleActive;
 
-    // Show/hide row based on filter conditions
     if (
       matchesProjectId &&
-      matchesProjectTypeId &&
-      matchesGroupId &&
+      matchesStatus &&
       matchesRegion &&
-      matchesStatus
+      matchesType &&
+      matchesFeature &&
+      matchesToggleActive
     ) {
       row.style.display = "";
     } else {

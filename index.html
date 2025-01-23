@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deep Linking with Filters</title>
+    <title>Advanced Filters with Deep Linking</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="container mt-5">
-      <h2>Data Table with Deep Linking Filters</h2>
+      <h2>Advanced Data Table with Deep Linking Filters</h2>
 
       <!-- Filter Section -->
       <div class="row mb-4">
@@ -26,36 +26,6 @@
           />
         </div>
         <div class="col">
-          <label for="projectTypeId" class="form-label">Project Type ID</label>
-          <input
-            type="text"
-            id="projectTypeId"
-            class="form-control"
-            data-filter-name="projectTypeId"
-            placeholder="Enter Project Type ID"
-          />
-        </div>
-        <div class="col">
-          <label for="groupId" class="form-label">Group ID</label>
-          <input
-            type="text"
-            id="groupId"
-            class="form-control"
-            data-filter-name="groupId"
-            placeholder="Enter Group ID"
-          />
-        </div>
-        <div class="col">
-          <label for="region" class="form-label">Region</label>
-          <input
-            type="text"
-            id="region"
-            class="form-control"
-            data-filter-name="region"
-            placeholder="Enter Region"
-          />
-        </div>
-        <div class="col">
           <label for="status" class="form-label">Status</label>
           <select id="status" class="form-select" data-filter-name="status">
             <option value="">All</option>
@@ -63,6 +33,94 @@
             <option value="Inactive">Inactive</option>
             <option value="Pending">Pending</option>
           </select>
+        </div>
+        <div class="col">
+          <label for="region" class="form-label">Region</label>
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="regionDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Select Region
+            </button>
+            <ul
+              class="dropdown-menu"
+              id="regionDropdownMenu"
+              data-filter-name="region"
+            >
+              <li>
+                <button class="dropdown-item" data-value="North">North</button>
+              </li>
+              <li>
+                <button class="dropdown-item" data-value="South">South</button>
+              </li>
+              <li>
+                <button class="dropdown-item" data-value="East">East</button>
+              </li>
+              <li>
+                <button class="dropdown-item" data-value="West">West</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col">
+          <label for="type" class="form-label">Project Type</label>
+          <div>
+            <input
+              type="radio"
+              name="type"
+              id="typeA"
+              value="TypeA"
+              data-filter-name="type"
+            />
+            <label for="typeA">Type A</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              name="type"
+              id="typeB"
+              value="TypeB"
+              data-filter-name="type"
+            />
+            <label for="typeB">Type B</label>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label">Features</label>
+          <div>
+            <input
+              type="checkbox"
+              id="feature1"
+              data-filter-name="feature"
+              value="Feature1"
+            />
+            <label for="feature1">Feature 1</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="feature2"
+              data-filter-name="feature"
+              value="Feature2"
+            />
+            <label for="feature2">Feature 2</label>
+          </div>
+        </div>
+        <div class="col">
+          <label class="form-label">Toggle Active</label>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="toggleActive"
+              data-filter-name="toggleActive"
+            />
+            <label class="form-check-label" for="toggleActive">Active</label>
+          </div>
         </div>
       </div>
 
@@ -80,109 +138,50 @@
         <thead>
           <tr>
             <th>Project ID</th>
-            <th>Project Type ID</th>
-            <th>Group ID</th>
-            <th>Region</th>
             <th>Status</th>
+            <th>Region</th>
+            <th>Project Type</th>
+            <th>Features</th>
+            <th>Active</th>
           </tr>
         </thead>
         <tbody id="dataTable">
-          <!-- Sample Records -->
           <tr
             data-project-id="101"
-            data-project-type-id="201"
-            data-group-id="301"
-            data-region="North"
             data-status="Active"
+            data-region="North"
+            data-type="TypeA"
+            data-feature="Feature1"
+            data-toggle-active="true"
           >
             <td>101</td>
-            <td>201</td>
-            <td>301</td>
-            <td>North</td>
             <td>Active</td>
+            <td>North</td>
+            <td>Type A</td>
+            <td>Feature 1</td>
+            <td>Yes</td>
           </tr>
           <tr
             data-project-id="102"
-            data-project-type-id="202"
-            data-group-id="302"
-            data-region="South"
             data-status="Inactive"
+            data-region="South"
+            data-type="TypeB"
+            data-feature="Feature2"
+            data-toggle-active="false"
           >
             <td>102</td>
-            <td>202</td>
-            <td>302</td>
-            <td>South</td>
             <td>Inactive</td>
-          </tr>
-          <tr
-            data-project-id="103"
-            data-project-type-id="203"
-            data-group-id="303"
-            data-region="East"
-            data-status="Pending"
-          >
-            <td>103</td>
-            <td>203</td>
-            <td>303</td>
-            <td>East</td>
-            <td>Pending</td>
-          </tr>
-          <tr
-            data-project-id="104"
-            data-project-type-id="204"
-            data-group-id="304"
-            data-region="West"
-            data-status="Active"
-          >
-            <td>104</td>
-            <td>204</td>
-            <td>304</td>
-            <td>West</td>
-            <td>Active</td>
-          </tr>
-          <tr
-            data-project-id="105"
-            data-project-type-id="205"
-            data-group-id="305"
-            data-region="North"
-            data-status="Inactive"
-          >
-            <td>105</td>
-            <td>205</td>
-            <td>305</td>
-            <td>North</td>
-            <td>Inactive</td>
-          </tr>
-          <tr
-            data-project-id="106"
-            data-project-type-id="206"
-            data-group-id="306"
-            data-region="South"
-            data-status="Pending"
-          >
-            <td>106</td>
-            <td>206</td>
-            <td>306</td>
             <td>South</td>
-            <td>Pending</td>
+            <td>Type B</td>
+            <td>Feature 2</td>
+            <td>No</td>
           </tr>
-          <tr
-            data-project-id="107"
-            data-project-type-id="207"
-            data-group-id="307"
-            data-region="East"
-            data-status="Active"
-          >
-            <td>107</td>
-            <td>207</td>
-            <td>307</td>
-            <td>East</td>
-            <td>Active</td>
-          </tr>
+          <!-- Add more records as needed -->
         </tbody>
       </table>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
