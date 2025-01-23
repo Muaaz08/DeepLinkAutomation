@@ -62,4 +62,19 @@ $(document).ready(function () {
     // Ensure DataTable redraws to reflect changes
     dataTable.draw();
   });
+
+  // Clear Filters
+  $("#clearFilters").on("click", function () {
+    // Reset all filter inputs
+    $("#projectId").val("");
+    $("#status").val("");
+    $("#region").val("");
+    $("#type").val("");
+    $("input[data-filter-name='feature']").prop("checked", false);
+    $("#toggleActive").prop("checked", false);
+
+    // Reset the table to show all rows
+    dataTable.search("").columns().search("").draw();
+    document.querySelector("#applyFilters").click();
+  });
 });
