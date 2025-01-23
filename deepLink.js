@@ -1,47 +1,57 @@
-// Parse query parameters from the URL
-function getQueryParams() {
-  const params = {};
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+$(document).ready(function () {
+  // Extract query parameters from the URL
+  const params = new URLSearchParams(window.location.search);
 
-  urlParams.forEach((value, key) => {
-    params[key] = value;
+  const projectId = params.get("projectId") || "";
+  const status = params.get("status") || "";
+  const region = params.get("region") || "";
+  const type = params.get("type") || "";
+  const features = params.getAll("feature") || [];
+  const toggleActive = params.get("toggleActive") === "true";
+
+  // Set filter inputs based on query parameters
+  $("#projectId").val(projectId);
+  $("#status").val(status);
+  $("#region").val(region);
+  $("#type").val(type);
+
+  features.forEach((feature) => {
+    $(`input[data-filter-name="feature"][value="${feature}"]`).prop(
+      "checked",
+      true
+    );
   });
 
-  return params;
-}
+  $("#toggleActive").prop("checked", toggleActive);
 
-// Apply filters based on query parameters
-function applyFiltersFromQueryParams() {
-  const params = getQueryParams();
+  // Trigger DataTable filtering based on query params
+  const dataTable = $("#dataTable").DataTable();
 
-  // Loop through the query parameters and set filter values
-  Object.keys(params).forEach((key) => {
-    const input = document.querySelector(`[data-filter-name="${key}"]`);
-    if (input) {
-      if (input.type === "checkbox" || input.type === "radio") {
-        input.checked = input.value === params[key];
-      } else if (input.tagName === "SELECT") {
-        input.value = params[key];
-      } else {
-        input.value = params[key];
-      }
-      input.dispatchEvent(new Event("change"));
-    }
+  dataTable.rows().every(function () {
+    const data = this.data();
 
-    // Handle dropdown menus
-    if (key === "region") {
-      const dropdownItem = document.querySelector(
-        `#regionDropdownMenu [data-value="${params[key]}"]`
-      );
-      if (dropdownItem) {
-        dropdownItem.click();
-      }
+    const matchesProjectId = !projectId || data[0] === projectId;
+    const matchesStatus = !status || data[1] === status;
+    const matchesRegion = !region || data[2] === region;
+    const matchesType = !type || data[3] === type;
+    const matchesFeatures = features.length === 0 || features.includes(data[4]);
+    const matchesToggleActive =
+      !toggleActive || data[5] === (toggleActive ? "Yes" : "No");
+
+    if (
+      matchesProjectId &&
+      matchesStatus &&
+      matchesRegion &&
+      matchesType &&
+      matchesFeatures &&
+      matchesToggleActive
+    ) {
+      $(this.node()).show();
+    } else {
+      $(this.node()).hide();
     }
   });
 
-  filterDataTable();
-}
-
-// Apply filters from query params on page load
-window.addEventListener("DOMContentLoaded", applyFiltersFromQueryParams);
+  // Ensure DataTable redraws to reflect changes
+  dataTable.draw();
+});
