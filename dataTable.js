@@ -7,6 +7,8 @@ $(document).ready(function () {
       row.type,
       row.feature,
       row.toggleActive ? "Yes" : "No",
+      row.category, // New Category Column
+      row.subcategory, // New Subcategory Column
     ]),
     columns: [
       { title: "Project ID" },
@@ -15,24 +17,43 @@ $(document).ready(function () {
       { title: "Project Type" },
       { title: "Features" },
       { title: "Active" },
+      { title: "Category" }, // New Category Column
+      { title: "Subcategory" }, // New Subcategory Column
     ],
-    pageLength: 5,
+    pageLength: 10,
   });
 
-  // Apply filters when the "Apply Filters" button is clicked
+  // Data for dependent dropdowns
+  const subcategories = {
+    Technology: ["Software", "Hardware", "AI"],
+    Business: ["Finance", "Marketing", "HR"],
+    Science: ["Physics", "Chemistry", "Biology"],
+  };
+
+  // Populate the subcategory dropdown based on selected category
+  $("#category").on("change", function () {
+    const selectedCategory = $(this).val();
+    const $subcategory = $("#subcategory");
+
+    // Clear existing options
+    $subcategory.empty().append('<option value="">Select Subcategory</option>');
+
+    if (selectedCategory && subcategories[selectedCategory]) {
+      subcategories[selectedCategory].forEach((sub) => {
+        $subcategory.append(`<option value="${sub}">${sub}</option>`);
+      });
+    }
+  });
+
+  // Apply Filters
   $("#applyFilters").on("click", function () {
     const projectId = $("#projectId").val().trim();
     const status = $("#status").val().trim();
     const region = $("#region").val().trim();
     const type = $("#type").val().trim();
-    const features = $("input[data-filter-name='feature']:checked")
-      .map(function () {
-        return $(this).val();
-      })
-      .get();
-    const toggleActive = $("#toggleActive").is(":checked");
+    const category = $("#category").val().trim();
+    const subcategory = $("#subcategory").val().trim();
 
-    // Use DataTable's search API to filter
     dataTable.rows().every(function () {
       const data = this.data();
 
@@ -40,18 +61,16 @@ $(document).ready(function () {
       const matchesStatus = !status || data[1] === status;
       const matchesRegion = !region || data[2] === region;
       const matchesType = !type || data[3] === type;
-      const matchesFeatures =
-        features.length === 0 || features.includes(data[4]);
-      const matchesToggleActive =
-        !toggleActive || data[5] === (toggleActive ? "Yes" : "No");
+      const matchesCategory = !category || data[6] === category;
+      const matchesSubcategory = !subcategory || data[7] === subcategory;
 
       if (
         matchesProjectId &&
         matchesStatus &&
         matchesRegion &&
         matchesType &&
-        matchesFeatures &&
-        matchesToggleActive
+        matchesCategory &&
+        matchesSubcategory
       ) {
         $(this.node()).show();
       } else {
@@ -59,22 +78,20 @@ $(document).ready(function () {
       }
     });
 
-    // Ensure DataTable redraws to reflect changes
     dataTable.draw();
   });
 
   // Clear Filters
   $("#clearFilters").on("click", function () {
-    // Reset all filter inputs
     $("#projectId").val("");
     $("#status").val("");
     $("#region").val("");
     $("#type").val("");
-    $("input[data-filter-name='feature']").prop("checked", false);
-    $("#toggleActive").prop("checked", false);
+    $("#category").val("");
+    $("#subcategory")
+      .empty()
+      .append('<option value="">Select Subcategory</option>');
 
-    // Reset the table to show all rows
     dataTable.search("").columns().search("").draw();
-    document.querySelector("#applyFilters").click();
   });
 });

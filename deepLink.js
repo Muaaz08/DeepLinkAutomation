@@ -8,12 +8,16 @@ $(document).ready(function () {
   const type = params.get("type") || "";
   const features = params.getAll("feature") || [];
   const toggleActive = params.get("toggleActive") === "true";
+  const category = params.get("category") || "";
+  const subcategory = params.get("subcategory") || "";
 
   // Set filter inputs based on query parameters
   $("#projectId").val(projectId);
   $("#status").val(status);
   $("#region").val(region);
   $("#type").val(type);
+  $("#category").val(category);
+  $("#subcategory").val(subcategory);
 
   features.forEach((feature) => {
     $(`input[data-filter-name="feature"][value="${feature}"]`).prop(
