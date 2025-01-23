@@ -45,6 +45,25 @@
             placeholder="Enter Group ID"
           />
         </div>
+        <div class="col">
+          <label for="region" class="form-label">Region</label>
+          <input
+            type="text"
+            id="region"
+            class="form-control"
+            data-filter-name="region"
+            placeholder="Enter Region"
+          />
+        </div>
+        <div class="col">
+          <label for="status" class="form-label">Status</label>
+          <select id="status" class="form-select" data-filter-name="status">
+            <option value="">All</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
       </div>
 
       <!-- Trigger Filters Button -->
@@ -63,35 +82,102 @@
             <th>Project ID</th>
             <th>Project Type ID</th>
             <th>Group ID</th>
+            <th>Region</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody id="dataTable">
+          <!-- Sample Records -->
           <tr
             data-project-id="101"
             data-project-type-id="201"
             data-group-id="301"
+            data-region="North"
+            data-status="Active"
           >
             <td>101</td>
             <td>201</td>
             <td>301</td>
+            <td>North</td>
+            <td>Active</td>
           </tr>
           <tr
             data-project-id="102"
             data-project-type-id="202"
             data-group-id="302"
+            data-region="South"
+            data-status="Inactive"
           >
             <td>102</td>
             <td>202</td>
             <td>302</td>
+            <td>South</td>
+            <td>Inactive</td>
           </tr>
           <tr
             data-project-id="103"
             data-project-type-id="203"
             data-group-id="303"
+            data-region="East"
+            data-status="Pending"
           >
             <td>103</td>
             <td>203</td>
             <td>303</td>
+            <td>East</td>
+            <td>Pending</td>
+          </tr>
+          <tr
+            data-project-id="104"
+            data-project-type-id="204"
+            data-group-id="304"
+            data-region="West"
+            data-status="Active"
+          >
+            <td>104</td>
+            <td>204</td>
+            <td>304</td>
+            <td>West</td>
+            <td>Active</td>
+          </tr>
+          <tr
+            data-project-id="105"
+            data-project-type-id="205"
+            data-group-id="305"
+            data-region="North"
+            data-status="Inactive"
+          >
+            <td>105</td>
+            <td>205</td>
+            <td>305</td>
+            <td>North</td>
+            <td>Inactive</td>
+          </tr>
+          <tr
+            data-project-id="106"
+            data-project-type-id="206"
+            data-group-id="306"
+            data-region="South"
+            data-status="Pending"
+          >
+            <td>106</td>
+            <td>206</td>
+            <td>306</td>
+            <td>South</td>
+            <td>Pending</td>
+          </tr>
+          <tr
+            data-project-id="107"
+            data-project-type-id="207"
+            data-group-id="307"
+            data-region="East"
+            data-status="Active"
+          >
+            <td>107</td>
+            <td>207</td>
+            <td>307</td>
+            <td>East</td>
+            <td>Active</td>
           </tr>
         </tbody>
       </table>

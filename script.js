@@ -33,20 +33,32 @@ function filterDataTable() {
   const projectId = document.getElementById("projectId").value.trim();
   const projectTypeId = document.getElementById("projectTypeId").value.trim();
   const groupId = document.getElementById("groupId").value.trim();
+  const region = document.getElementById("region").value.trim();
+  const status = document.getElementById("status").value.trim();
 
   const rows = document.querySelectorAll("#dataTable tr");
   rows.forEach((row) => {
     const rowProjectId = row.getAttribute("data-project-id");
     const rowProjectTypeId = row.getAttribute("data-project-type-id");
     const rowGroupId = row.getAttribute("data-group-id");
+    const rowRegion = row.getAttribute("data-region");
+    const rowStatus = row.getAttribute("data-status");
 
     const matchesProjectId = !projectId || rowProjectId === projectId;
     const matchesProjectTypeId =
       !projectTypeId || rowProjectTypeId === projectTypeId;
     const matchesGroupId = !groupId || rowGroupId === groupId;
+    const matchesRegion = !region || rowRegion === region;
+    const matchesStatus = !status || rowStatus === status;
 
     // Show/hide row based on filter conditions
-    if (matchesProjectId && matchesProjectTypeId && matchesGroupId) {
+    if (
+      matchesProjectId &&
+      matchesProjectTypeId &&
+      matchesGroupId &&
+      matchesRegion &&
+      matchesStatus
+    ) {
       row.style.display = "";
     } else {
       row.style.display = "none";
